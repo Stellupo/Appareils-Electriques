@@ -1,4 +1,8 @@
 import { Subject } from 'rxjs/Subject';
+import { HttpClient } from '@angular/common/http';
+import {Injectable} from '@angular/core';
+
+@Injectable()
 
 export class AppareilService {
 
@@ -21,6 +25,8 @@ export class AppareilService {
       status: 'éteint'
     }
   ];
+
+  constructor(private httpClient: HttpClient) { }
 
   getAppareilById(id: number) {
     const appareil = this.appareils.find(
@@ -71,4 +77,32 @@ export class AppareilService {
     this.appareils.push(appareilObject);
     this.emitAppareilSubject();
   }
+
+  saveAppareilsToServer() {
+    this.httpClient
+      .put('https://appareils-electriques-5d030-default-rtdb.firebaseio.com/appareils.json', this.appareils)
+      .subscribe(
+        () => {
+          console.log('Enregistrement terminé !');
+        },
+        (error) => {
+          console.log('Erreur ! : ' + error);
+        }
+      );
+  }
+
+  getAppareilsFromServer() {
+    this.httpClient
+      .get<any[]>('https://httpclient-demo.firebaseio.com/appareils.json')
+      .subscribe(
+        (response) => {
+          this.appareils = response;
+          this.emitAppareilSubject();
+        },
+        (error) => {
+          console.log('Erreur ! : ' + error);
+        }
+      );
+  }
+
 }
