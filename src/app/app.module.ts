@@ -37,6 +37,7 @@ const appRoutes: Routes = [
     AppareilComponent,
     AuthComponent,
     AppareilViewComponent,
+    SingleAppareilComponent,
     FourOhFourComponent,
     EditAppareilComponent,
     UserListComponent,
